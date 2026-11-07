@@ -1,0 +1,127 @@
+name: FRIDGE Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-core:
+    name: Build FRIDGE CLI (Windows x64)
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: core
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Run tests
+        run: cargo test --verbose
+
+      - name: Build release executable
+        run: cargo build --release --target x86_64-pc-windows-msvc
+
+      - name: Verify executable
+        run: |
+          .\target\x86_64-pc-windows-msvc\release\fridge.exe version
+          .\target\x86_64-pc-windows-msvc\release\fridge.exe run ..\examples\hello.frg
+
+      - name: Upload CLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fridge-cli-windows
+          path: core/target/x86_64-pc-windows-msvc/release/fridge.exe
+          retention-days: 30
+
+  build-extension:
+    name: Build VS Code Extension
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: editors/vscode
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile TypeScript
+        run: npm run compile
+
+      - name: Package VSIX
+        run: npx vsce package --allow-missing-repository --skip-license
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fridge-vsix
+          path: editors/vscode/*.vsix
+          retention-days: 30
+
+  build-installer:
+    name: Build Windows Installer
+    needs: [build-core]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download CLI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fridge-cli-windows
+          path: core/target/release/
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Compile installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\fridge.iss
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fridge-installer
+          path: installer/output/*.exe
+          retention-days: 30
+
+  publish-release:
+    name: Create GitHub Release
+    needs: [build-core, build-extension, build-installer]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: List artifacts for verification
+        run: find artifacts -type f
+
+      - name: Create Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/fridge-installer/*.exe
+            artifacts/fridge-vsix/*.vsix
+            artifacts/fridge-cli-windows/fridge.exe
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
