@@ -1,0 +1,17 @@
+[package]
+name = "fridge-core"
+version = "0.1.0"
+edition = "2021"
+description = "FRIDGE programming language — core toolchain"
+license = "MIT"
+
+[lib]
+name = "fridge_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fridge"
+path = "src/main.rs"
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
