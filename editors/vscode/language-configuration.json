@@ -1,0 +1,14 @@
+{
+  "comments": {
+    "lineComment": "//",
+    "blockComment": ["/*", "*/"]
+  },
+  "brackets": [["(", ")"]],
+  "autoClosingPairs": [["(", ")"], ["\"", "\""]],
+  "surroundingPairs": [["(", ")"], ["\"", "\""]],
+  "wordPattern": "[A-Za-z_][A-Za-z0-9_]*",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(if|otherwise|else|repeat|loop|while|for|when|create|define|game|screen)\\b(?!.*\\bend\\b).*$",
+    "decreaseIndentPattern": "^\\s*(end\\b.*|otherwise\\b.*|else\\b.*)$"
+  }
+}
