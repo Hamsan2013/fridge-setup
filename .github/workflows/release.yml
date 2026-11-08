@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        working-directory: core
+        working-directory: core/fridge-core
     steps:
       - uses: actions/checkout@v4
 
@@ -30,15 +30,16 @@ jobs:
         run: cargo build --release --target x86_64-pc-windows-msvc
 
       - name: Verify executable
+        shell: pwsh
         run: |
           .\target\x86_64-pc-windows-msvc\release\fridge.exe version
-          .\target\x86_64-pc-windows-msvc\release\fridge.exe run ..\examples\hello.frg
+          .\target\x86_64-pc-windows-msvc\release\fridge.exe run ..\..\examples\hello.frg
 
       - name: Upload CLI artifact
         uses: actions/upload-artifact@v4
         with:
           name: fridge-cli-windows
-          path: core/target/x86_64-pc-windows-msvc/release/fridge.exe
+          path: core/fridge-core/target/x86_64-pc-windows-msvc/release/fridge.exe
           retention-days: 30
 
   build-extension:
@@ -81,16 +82,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: fridge-cli-windows
-          path: core/target/release/
+          path: core/fridge-core/target/release/
 
       - name: Install Inno Setup
         run: choco install innosetup --no-progress -y
 
       - name: Compile installer
+        shell: pwsh
         run: |
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\fridge.iss
 
-      - name: Upload installer artifact
+      - name: Upload installer artifacts
         uses: actions/upload-artifact@v4
         with:
           name: fridge-installer
