@@ -1,0 +1,121 @@
+{
+  "name": "fridge-language-support",
+  "displayName": "FRIDGE Language Support",
+  "description": "FRIDGE — the simple English programming language. Highlighting, snippets, diagnostics, run and stop.",
+  "version": "0.1.0",
+  "publisher": "kiteros",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:fridge"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "fridge",
+        "aliases": [
+          "FRIDGE",
+          "fridge"
+        ],
+        "extensions": [
+          ".frg"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "fridge",
+        "scopeName": "source.fridge",
+        "path": "./syntaxes/fridge.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "fridge",
+        "path": "./snippets/fridge.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "fridge.runProgram",
+        "title": "FRIDGE: Run Program"
+      },
+      {
+        "command": "fridge.checkProgram",
+        "title": "FRIDGE: Check Program"
+      },
+      {
+        "command": "fridge.stopProgram",
+        "title": "FRIDGE: Stop Program"
+      },
+      {
+        "command": "fridge.formatProgram",
+        "title": "FRIDGE: Format Program"
+      },
+      {
+        "command": "fridge.fixProgram",
+        "title": "FRIDGE: Fix Errors"
+      },
+      {
+        "command": "fridge.buildProgram",
+        "title": "FRIDGE: Build Program"
+      },
+      {
+        "command": "fridge.newProject",
+        "title": "FRIDGE: Create FRIDGE Project"
+      },
+      {
+        "command": "fridge.openPreview",
+        "title": "FRIDGE: Open Game Preview"
+      }
+    ],
+    "configuration": {
+      "title": "FRIDGE",
+      "properties": {
+        "fridge.interpreterPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the fridge executable. Empty = search PATH."
+        },
+        "fridge.autoCheck": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check .frg files on save and show problems."
+        },
+        "fridge.autoFixOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Apply safe quick fixes automatically on save."
+        },
+        "fridge.syntaxStyle": {
+          "type": "string",
+          "enum": [
+            "long",
+            "short"
+          ],
+          "default": "long",
+          "description": "Formatter output style: full English phrases or official shortcuts."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.5.0"
+  }
+}
