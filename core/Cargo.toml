@@ -1,2 +1,8 @@
-[target.'cfg(windows)'.build-dependencies]
-winres = "0.1"
+[workspace]
+members = ["fridge-core"]
+resolver = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
