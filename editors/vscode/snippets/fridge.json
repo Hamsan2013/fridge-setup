@@ -1,0 +1,77 @@
+{
+  "Remember variable": {
+    "prefix": "remember",
+    "body": ["remember ${1:name} as ${2:value}"],
+    "description": "Declare a variable"
+  },
+  "Set value": {
+    "prefix": "set",
+    "body": ["set ${1:name} to ${2:value}"],
+    "description": "Change a variable"
+  },
+  "If / otherwise": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition}",
+      "\t${2:show \"ok\"}",
+      "otherwise",
+      "\t${3:show \"no\"}",
+      "end if"
+    ],
+    "description": "Condition with otherwise branch"
+  },
+  "Repeat": {
+    "prefix": "repeat",
+    "body": ["repeat ${1:5} times", "\t$0", "end repeat"],
+    "description": "Counted loop"
+  },
+  "While": {
+    "prefix": "while",
+    "body": ["while ${1:condition}", "\t$0", "end while"],
+    "description": "Conditional loop"
+  },
+  "For each": {
+    "prefix": "foreach",
+    "body": ["for each ${1:item} in ${2:items}", "\t$0", "end for"],
+    "description": "Iterate a list"
+  },
+  "Function": {
+    "prefix": "function",
+    "body": [
+      "create a function called ${1:name}",
+      "\t$0",
+      "end function"
+    ],
+    "description": "Define a function"
+  },
+  "Function with input": {
+    "prefix": "functiontaking",
+    "body": [
+      "create a function called ${1:greet} taking ${2:name}",
+      "\tshow \"Hello \" joined with ${2:name}",
+      "end function"
+    ],
+    "description": "Function with a parameter"
+  },
+  "When program starts": {
+    "prefix": "onstart",
+    "body": ["when the program starts", "\t$0", "end when"],
+    "description": "Startup event"
+  },
+  "When pressed": {
+    "prefix": "whenpressed",
+    "body": ["when ${1:control} is pressed", "\t$0", "end when"],
+    "description": "Press event"
+  },
+  "Screen": {
+    "prefix": "screen",
+    "body": [
+      "create a screen called ${1:Home}",
+      "\tadd a label called ${2:title} showing \"${3:Welcome}\"",
+      "\tplace ${2:title} at x ${4:20} y ${5:30}",
+      "\t$0",
+      "end screen"
+    ],
+    "description": "GUI screen with a placed label"
+  }
+}
