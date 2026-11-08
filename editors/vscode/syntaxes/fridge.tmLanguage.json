@@ -1,0 +1,75 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FRIDGE",
+  "scopeName": "source.fridge",
+  "patterns": [
+    {
+      "name": "comment.line.double-slash.fridge",
+      "match": "//.*$"
+    },
+    {
+      "name": "comment.line.note.fridge",
+      "match": "^\\s*note\\b.*$"
+    },
+    {
+      "name": "comment.block.fridge",
+      "begin": "/\\*",
+      "end": "\\*/"
+    },
+    {
+      "name": "string.quoted.double.fridge",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.fridge",
+          "match": "\\\\(n|t|\"|\\\\)"
+        }
+      ]
+    },
+    {
+      "name": "constant.numeric.fridge",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
+    },
+    {
+      "name": "constant.language.fridge",
+      "match": "\\b(true|false|nothing)\\b"
+    },
+    {
+      "match": "\\b(?:called|define)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.fridge"
+        }
+      }
+    },
+    {
+      "name": "keyword.control.fridge",
+      "match": "\\b(if|otherwise|else|end|repeat|loop|times|forever|while|for|each|in|break|continue|when|on)\\b"
+    },
+    {
+      "name": "keyword.declaration.fridge",
+      "match": "\\b(create|function|called|define|taking|returning|screen|game|structure|use)\\b"
+    },
+    {
+      "name": "keyword.other.event.fridge",
+      "match": "\\b(program|starts?|ends|pressed|released|touched|collides|frame)\\b"
+    },
+    {
+      "name": "keyword.other.statement.fridge",
+      "match": "\\b(remember|set|becomes|add|subtract|multiply|divide|append|show|print|call|return|place|open|to|from|by|with|as)\\b"
+    },
+    {
+      "name": "keyword.operator.word.fridge",
+      "match": "\\b(plus|minus|multiplied|divided|modulo|joined|is|not|and|or|greater|less|than|equal|at|least|most|of|containing|showing)\\b"
+    },
+    {
+      "name": "storage.type.fridge",
+      "match": "\\b(number|text|boolean|anything|list|empty|map)\\b"
+    },
+    {
+      "name": "support.function.fridge",
+      "match": "\\b(first|last|item|items)\\b"
+    }
+  ]
+}
